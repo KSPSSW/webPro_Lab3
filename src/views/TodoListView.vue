@@ -18,9 +18,7 @@ interface Todo {
   completed: boolean
 }
 function removeTodo(index: number) {
-  console.log(todos.value)
   todos.value.splice(index, 1)
-  console.log(todos.value)
 }
 const todos = ref<Todo[]>([
   { text: 'abc', completed: false },
