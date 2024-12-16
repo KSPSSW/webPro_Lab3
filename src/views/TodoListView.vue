@@ -1,7 +1,12 @@
 <template>
   <div>
     <h1>Todo List</h1>
-    <input type="text" /><button>Add</button>
+    <input
+      type="text"
+      v-model="newTodo"
+      placeholder="Add a new  task"
+      @keyup.enter="addTodo"
+    /><button @click="addTodo">Add</button>
     <ul>
       <li v-for="(todo, index) in todos" v-bind:key="index">
         <span>{{ index + 1 }}.</span><span>{{ todo.text }}</span>
@@ -17,6 +22,14 @@ interface Todo {
   text: string
   completed: boolean
 }
+function addTodo() {
+  if (newTodo.value.trim() === '') return
+  todos.value.push({
+    text: newTodo.value.trim(),
+    completed: false,
+  })
+  newTodo.value = ''
+}
 function removeTodo(index: number) {
   todos.value.splice(index, 1)
 }
@@ -25,6 +38,7 @@ const todos = ref<Todo[]>([
   { text: 'def', completed: true },
   { text: 'ghi', completed: false },
 ])
+const newTodo = ref<string>('')
 </script>
 
 <style scope>
