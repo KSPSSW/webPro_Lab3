@@ -2,13 +2,14 @@
   <div id="page">
     <h1>Product Management</h1>
     <div class="add-product">
+      <div>
       <input type="text" placeholder="Enter name" v-model="form.name" />
       <input type="number" v-model="form.price" />
-      <input type="checkbox" v-model="form.status" />
+      <input type="checkbox" class="checkbox" v-model="form.status">
       <button @click="save">Save</button>
       <button @click="clearForm">Cancel</button>
     </div>
-    <div style="margin-top: 10px">
+    <div  class="status-shelf">
       <button @click="filter = 'all'">All</button>
       <button @click="filter = 'on_shelf'">On Shelf</button>
       <button @click="filter = 'off_shelf'">Off Shelf</button>
@@ -127,9 +128,23 @@ button {
   padding: 4px;
 }
 
+.checkbox {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
 td,
 th {
   padding: 10px;
   text-align: center;
 }
+
+.status-shelf {
+  margin-top: 20px;
+}
+
+h1 {
+  margin-bottom: 10px;
+}
+
 </style>
