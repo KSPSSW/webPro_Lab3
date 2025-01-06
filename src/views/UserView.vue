@@ -41,13 +41,19 @@ interface User {
   password: string
 }
 
-const form = reactive<User>({ id: 0, email: '', password: '' })
+const form = ref<User>({ id: 0, email: '', password: '' })
 const users = ref<User[]>([])
 const lastId = ref(1)
 const editedId = ref<number | null>(null)
 
 function addUser() {
-  users.value.push({ ...form, id: lastId.value })
+  users.value.push({ ...form.value, id: lastId.value })
+  lastId.value++
+  clearForm()
+}
+
+function clearForm() {
+  form.value = { id: 0, email: '', password: '' }
 }
 </script>
 
