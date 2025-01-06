@@ -10,9 +10,9 @@
       /><button @click="addTodo">Add</button>
     </div>
     <div>
-      <button>Completed</button>
-      <button>Not Completed</button>
-      <button>All</button>
+      <button @click="filter = 'completed'">Completed</button>
+      <button @click="filter = 'not_completed'">Not Completed</button>
+      <button @click="filter = 'all'">All</button>
     </div>
     <ul>
       <li v-for="(todo, index) in filterTodos" v-bind:key="index">
@@ -49,8 +49,20 @@ const todos = ref<Todo[]>([
   { text: 'ghi', completed: false },
 ])
 const filterTodos = computed(function () {
-  return todos.value
+  if (filter.value === 'completed') {
+    return todos.value.filter(function (item) {
+      return item.completed === true
+    })
+  }
+  if (filter.value === 'not_completed') {
+    return todos.value.filter(function (item) {
+      return item.completed === false
+    })
+  } else {
+    return todos.value
+  }
 })
+const filter = ref<string>('all') // 'all' 'completed' 'not_completed'
 const newTodo = ref<string>('')
 </script>
 
