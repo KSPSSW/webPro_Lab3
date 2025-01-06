@@ -3,9 +3,9 @@
   <div id="page">
     <h1>User Management</h1>
     <div>
-      <input type="text" placeholder="Enter email" />
-      <input type="text" placeholder="Enter password" />
-      <button>Save</button>
+      <input type="text" placeholder="Enter email" v-model="form.email" />
+      <input type="password" placeholder="Enter password" v-model="form.password" />
+      <button @click="addUser">Save</button>
       <button>cancel</button>
     </div>
     <div>
@@ -17,17 +17,15 @@
           <th>Action</th>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>email1@mail.com</td>
-            <td>password</td>
-            <td><button>Edit</button><button>Delete</button></td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>email2@mail.com</td>
-            <td>password</td>
-            <td><button>Edit</button><button>Delete</button></td>
+          <tr></tr>
+          <tr v-for="user in users" :key="user.id">
+            <td>{{ user.id }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.password }}</td>
+            <td>
+              <button>Edit</button>
+              <button>Delete</button>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -44,6 +42,13 @@ interface User {
 }
 
 const form = reactive<User>({ id: 0, email: '', password: '' })
+const users = ref<User[]>([])
+const lastId = ref(1)
+const editedId = ref<number | null>(null)
+
+function addUser() {
+  users.value.push({ ...form, id: lastId.value })
+}
 </script>
 
 <style scoped></style>
@@ -62,11 +67,12 @@ table {
 input,
 button {
   margin-left: 4px;
+  padding: 4px;
 }
 
 td,
 th {
-  padding: 8px;
+  padding: 10px;
   text-align: center;
 }
 </style>
