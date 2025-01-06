@@ -24,8 +24,11 @@
             <td>{{ user.password }}</td>
             <td>
               <button @click="editUser(user.id)">Edit</button>
-              <button>Delete</button>
+              <button @click="deleteUser(user.id)">Delete</button>
             </td>
+          </tr>
+          <tr v-if="users.length === 0">
+            <td colspan="4">No Data</td>
           </tr>
         </tbody>
       </table>
@@ -34,7 +37,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref } from 'vue'
 interface User {
   id: number
   email: string
@@ -62,12 +65,25 @@ function editUser(id: number) {
   form.value = { ...users.value[index] }
 }
 
-function updateUser() {}
+function updateUser() {
+  if (editedIndex.value !== null) {
+    users.value[editedIndex.value] = { ...form.value }
+    clearForm()
+    editedIndex.value = null
+  }
+}
 
 function addUser() {
   users.value.push({ ...form.value, id: lastId.value })
   lastId.value++
   clearForm()
+}
+
+function deleteUser(id: number) {
+  const index = users.value.findIndex(function (item) {
+    return item.id === id
+  })
+  users.value.splice(index, 1)
 }
 
 function clearForm() {
