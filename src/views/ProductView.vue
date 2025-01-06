@@ -1,12 +1,17 @@
 <template>
   <div id="page">
     <h1>Product Management</h1>
-    <div>
+    <div class="add-product">
       <input type="text" placeholder="Enter name" v-model="form.name" />
       <input type="number" v-model="form.price" />
-      <input type="checkbox" name="" id="on-shelf" />
+      <input type="checkbox" v-model="form.status" />
       <button @click="save">Save</button>
-      <button>cancel</button>
+      <button @click="clearForm">Cancel</button>
+    </div>
+    <div style="margin-top: 10px">
+      <button @click="filter = 'all'">All</button>
+      <button @click="filter = 'on_shelf'">On Shelf</button>
+      <button @click="filter = 'off_shelf'">Off Shelf</button>
     </div>
     <div>
       <table border="1">
@@ -18,17 +23,17 @@
           <th>Action</th>
         </thead>
         <tbody>
-          <tr v-for="product in products" :key="product.id">
+          <tr v-for="product in filteredProducts" :key="product.id">
             <td>{{ product.id }}</td>
             <td>{{ product.name }}</td>
             <td>{{ product.price }}</td>
-            <td></td>
+            <td>{{ product.status ? 'On Shelf' : 'Off Shelf' }}</td>
             <td>
               <button @click="editproduct(product.id)">Edit</button>
               <button @click="deleteproduct(product.id)">Delete</button>
             </td>
           </tr>
-          <tr v-if="products.length === 0">
+          <tr v-if="filteredProducts.length === 0">
             <td colspan="5">No Data</td>
           </tr>
         </tbody>
@@ -38,17 +43,29 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 interface product {
   id: number
   name: string
   price: number
 }
 
-const form = ref<product>({ id: 0, name: '', price: 0 })
+const form = ref<product>({ id: 0, name: '', price: 0, status: true })
 const products = ref<product[]>([])
 const lastId = ref(1)
 const editedIndex = ref<number | null>(null)
+
+const filter = ref<string>('all')
+
+const filteredProducts = computed(() => {
+  if (filter.value === 'on_shelf') {
+    return products.value.filter((product) => product.status === true)
+  }
+  if (filter.value === 'off_shelf') {
+    return products.value.filter((product) => product.status === false)
+  }
+  return products.value
+})
 
 function save() {
   if (editedIndex.value !== null) {
@@ -88,7 +105,7 @@ function deleteproduct(id: number) {
 }
 
 function clearForm() {
-  form.value = { id: 0, name: '', price: 0 }
+  form.value = { id: 0, name: '', price: 0, status: true }
 }
 </script>
 
