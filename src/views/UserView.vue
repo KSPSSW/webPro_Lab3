@@ -36,14 +36,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, reactive } from 'vue'
 interface User {
   id: number
   email: string
   password: string
 }
 
-const form = ref<User>({ id: 0, email: '', password: '' })
+const form = reactive<User>({ id: 0, email: '', password: '' })
 </script>
 
 <style scoped></style>
