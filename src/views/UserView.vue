@@ -5,7 +5,7 @@
     <div>
       <input type="text" placeholder="Enter email" v-model="form.email" />
       <input type="password" placeholder="Enter password" v-model="form.password" />
-      <button @click="addUser">Save</button>
+      <button @click="save">Save</button>
       <button>cancel</button>
     </div>
     <div>
@@ -23,7 +23,7 @@
             <td>{{ user.email }}</td>
             <td>{{ user.password }}</td>
             <td>
-              <button>Edit</button>
+              <button @click="editUser(user.id)">Edit</button>
               <button>Delete</button>
             </td>
           </tr>
@@ -44,7 +44,25 @@ interface User {
 const form = ref<User>({ id: 0, email: '', password: '' })
 const users = ref<User[]>([])
 const lastId = ref(1)
-const editedId = ref<number | null>(null)
+const editedIndex = ref<number | null>(null)
+
+function save() {
+  if (editedIndex.value !== null) {
+    updateUser()
+  } else {
+    addUser()
+  }
+}
+
+function editUser(id: number) {
+  const index = users.value.findIndex(function (item) {
+    return item.id === id
+  })
+  editedIndex.value = index
+  form.value = { ...users.value[index] }
+}
+
+function updateUser() {}
 
 function addUser() {
   users.value.push({ ...form.value, id: lastId.value })
