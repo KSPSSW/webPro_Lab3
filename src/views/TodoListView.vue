@@ -14,7 +14,8 @@
       <button @click="filter = 'not_completed'">Not Completed</button>
       <button @click="filter = 'all'">All</button>
     </div>
-    <ul>
+    <div v-if="filterTodos.length === 0">No items</div>
+    <ul v-if="filterTodos.length > 0">
       <li v-for="todo in filterTodos" v-bind:key="todo.id">
         <span :class="{ completed: todo.completed }" @click="toggle(todo.id)"
           >{{ todo.id }} {{ todo.text }}</span
